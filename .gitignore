@@ -1,7 +1,7 @@
-__pycache__
+/__pycache__
+/boot-records
+.DS_STORE
 .env
 .gitignore
 venv
-.DS_Store
-boot-records
 channels.json
