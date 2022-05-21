@@ -1,7 +1,0 @@
-/__pycache__
-/boot-records
-.DS_STORE
-.env
-.gitignore
-venv
-channels.json
