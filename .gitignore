@@ -1,4 +1,6 @@
+__pycache__
 .env
+.gitignore
 venv
 .DS_Store
 boot-records
