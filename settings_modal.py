@@ -39,7 +39,7 @@ class SettingsModal(nextcord.ui.Modal):
         """
         save_data = {
             "notification_channel": self.notification_channel.value,
-            "admin_role_id.value": self.admin_role_id.value
+            "admin_role_id": self.admin_role_id.value
         }
         self.channels[interaction.guild_id] = save_data
         new_json = json.dumps(self.channels)
