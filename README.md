@@ -1,5 +1,7 @@
 # Chun's Discord Toolkit
 
+Simple bot to make your Discord server a safer place.
+
 ## Setup
 
 - After adding the bot to your server, go to *Integrations*
@@ -7,8 +9,6 @@
 - Set the appropriate permissions (safest to turn off permissions for everyone)
 
 ## Features
-
-Simple bot to check stuff in your server to make sure there is not shady shit going on.
 
 - Warns server admins if *administrator* permissions have been granted to another role
 - Warns server admins if *manage server* permissions have been granted to a role
