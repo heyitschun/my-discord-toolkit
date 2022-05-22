@@ -11,7 +11,7 @@ class Dropdown(nextcord.ui.Select):
     def __init__(self, bot: commands.Bot):
         self.guild = bot.get_guild(ORCA_SERVER_ID)
         options = [
-            nextcord.SelectOption(label="0: Purgeable members (no role after 14 days)"),
+            nextcord.SelectOption(label="0: Purgeable members (no role after 21 days)"),
             nextcord.SelectOption(label="1: Who has admin permissions?"),
             nextcord.SelectOption(label="2: Edit server blacklist (scam/ spam account IDs)")
         ]
@@ -49,7 +49,9 @@ class Dropdown(nextcord.ui.Select):
                         human_admins.append(str(member))
             bot_admin_message = "\n".join(bot_admins)
             human_admin_message = "\n".join(human_admins)
-            return await interaction.response.send_message(f"The following members have admin permissions:\n\n__Bots__\n{bot_admin_message}\n\n__Humans__\n{human_admin_message}")
+            return await interaction.response.send_message(f"""The following members have admin permissions:\n\n__Bots__\n{bot_admin_message}\n\n__Humans__\n{human_admin_message}
+                """, ephemeral=True
+            )
 
         # edit server blacklist
         if self.values[0].startswith("2"):
