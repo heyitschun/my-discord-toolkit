@@ -14,7 +14,7 @@ class Dropdown(nextcord.ui.Select):
         options = [
             nextcord.SelectOption(label="0: Purgeable members (no role after 21 days)"),
             nextcord.SelectOption(label="1: Who has admin permissions?"),
-            nextcord.SelectOption(label="2: Edit server blacklist (scam/ spam account IDs)")
+            nextcord.SelectOption(label="2: Blacklist a scammer/spammer (userID)")
         ]
         super().__init__(
             placeholder="Select something to do...", 
