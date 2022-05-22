@@ -3,11 +3,10 @@ import json
 import nextcord
 from nextcord import Interaction
 
-from bot import GUILDS
-
 class BlacklistModal(nextcord.ui.Modal):
     def __init__(self, interaction: Interaction):
-        self.guilds = GUILDS
+        with open("guild_settings.json") as f:
+            self.guilds = json.load(f)
         super().__init__(
             "Add user ID to blacklist",
             timeout = 5*60 # 5 minutes

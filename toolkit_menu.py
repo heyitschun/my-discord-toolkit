@@ -96,7 +96,6 @@ class ToolkitMenuCog(commands.Cog):
         self.bot = bot
 
     @bot.slash_command(name="ctk", guild_ids=[ORCA_SERVER_ID])
-    @commands.has_permissions(administrator=True)
     async def chuns_toolkit(self, interaction: Interaction):
         view = DropdownView(self.bot)
         await interaction.send("", view=view)

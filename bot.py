@@ -7,7 +7,8 @@ from nextcord.ext import commands
 config = dotenv.dotenv_values(".env")
 
 ORCA_SERVER_ID = 902859067708551230
-GUILDS = json.load(open("guild_settings.json"))
+with open("guild_settings.json") as f:
+    guilds = json.load(f)
 
 intents = nextcord.Intents.default()
 intents.members = True
@@ -19,7 +20,7 @@ bot.load_extension("event_listeners")
 
 @bot.slash_command(name="ping", guild_ids=[ORCA_SERVER_ID])
 async def ping(interaction: nextcord.Interaction):
-    print(GUILDS)
+    print(guilds)
     await interaction.response.send_message("Pong from python")
 
 bot.run(config["DISCORD_TOKEN"])

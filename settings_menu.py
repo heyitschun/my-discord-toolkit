@@ -11,7 +11,7 @@ class SettingsCog(commands.Cog):
     @bot.slash_command(
         name="ctk-settings",
         description="Chun's Toolkit Settings",
-        guild_ids=[ORCA_SERVER_ID]
+        guild_ids=[ORCA_SERVER_ID],
     )
     async def settings(self, interaction: Interaction):
         modal = SettingsModal(interaction)
