@@ -22,7 +22,7 @@ async def send_role_update_message_to_admin(
     async for entry in guild.audit_logs(limit=1):
         await channel.send(f"""<@&{admin_id}>: **Administrator update**
             • {entry.user} set {changed_permission} for {entry.target} to {new_permission_value}
-            • Check with ... to make sure this is not a security breach!
+            • Check with the team to make sure this is not a security breach!
         """)
 
 async def send_role_update_message(
