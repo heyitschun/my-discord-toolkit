@@ -47,3 +47,5 @@ class SettingsModal(nextcord.ui.Modal):
             out.write(new_json)
             out.close()
         await interaction.response.send_message(response, ephemeral=True)
+
+
