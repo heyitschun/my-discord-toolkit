@@ -7,7 +7,7 @@ from nextcord.ext import commands
 from bot import bot, ORCA_SERVER_ID
 
 class Dropdown(nextcord.ui.Select):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.guild = bot.get_guild(ORCA_SERVER_ID)
         options = [
             nextcord.SelectOption(label="0: Purgeable members (no role after 14 days)"),
@@ -26,7 +26,7 @@ class Dropdown(nextcord.ui.Select):
         if self.values[0].startswith("0"):
             purgeable = {}
             for member in self.guild.members:
-                days_since_joining = (datetime.now(timezone.utc) - member.joined_at).days
+                days_since_joining: int = (datetime.now(timezone.utc) - member.joined_at).days  # type: ignore
                 if len(member.roles) == 1 and days_since_joining > 21:
                     purgeable[member.name] = {"days_since_joining": days_since_joining}
             return await interaction.response.send_message(f"Nr of users who failed to become a member within 21 days: {len(purgeable.keys())}")
@@ -34,8 +34,8 @@ class Dropdown(nextcord.ui.Select):
         # check which members have admin permissions
         if self.values[0].startswith("1"):
             admin_roles = [role for role in self.guild.roles if role.permissions.administrator]
-            bot_admins = [] 
-            human_admins = []
+            bot_admins: list[str] = [] 
+            human_admins: list[str] = []
             for ar in admin_roles:
                 for member in ar.members:
                     if member.bot:
@@ -73,20 +73,21 @@ class Dropdown(nextcord.ui.Select):
 #             write.writerows(names_kicked)
 
 class DropdownView(nextcord.ui.View):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
         super().__init__()
-        self.add_item(Dropdown(self.bot))
+        self.add_item(Dropdown(self.bot)) # type: ignore
 
 class ToolkitMenuCog(commands.Cog):
-    def __init__(self, bot):
+    def __init__(self, bot: commands.Bot):
         self.bot = bot
 
     @bot.slash_command(name="ctk", guild_ids=[ORCA_SERVER_ID])
     @commands.has_permissions(administrator=True)
-    async def chuns_toolkit(self, ctx):
+    async def chuns_toolkit(self, interaction: Interaction):
+        print(type(interaction))
         view = DropdownView(self.bot)
-        await ctx.send("", view=view)
+        await interaction.send("", view=view)
 
-def setup(bot):
+def setup(bot: commands.Bot):
     bot.add_cog(ToolkitMenuCog(bot))
