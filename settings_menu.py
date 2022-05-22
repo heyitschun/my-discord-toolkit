@@ -1,7 +1,7 @@
 from nextcord import Interaction
 from nextcord.ext import commands
 
-from bot import bot, ORCA_SERVER_ID
+from bot import bot
 from settings_modal import SettingsModal
 
 class SettingsCog(commands.Cog):
@@ -10,8 +10,7 @@ class SettingsCog(commands.Cog):
 
     @bot.slash_command(
         name="ctk-settings",
-        description="Chun's Toolkit Settings",
-        guild_ids=[ORCA_SERVER_ID],
+        description="Chun's Toolkit Settings"
     )
     async def settings(self, interaction: Interaction):
         modal = SettingsModal(interaction)

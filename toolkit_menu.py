@@ -1,15 +1,16 @@
 from datetime import datetime, timezone
+import typing
 
 import nextcord
 from nextcord import Interaction
 from nextcord.ext import commands
 
-from bot import bot, ORCA_SERVER_ID
+from bot import bot
 from blacklist_modal import BlacklistModal
 
 class Dropdown(nextcord.ui.Select):
-    def __init__(self, bot: commands.Bot):
-        self.guild = bot.get_guild(ORCA_SERVER_ID)
+    def __init__(self, bot: commands.Bot, guild_id):
+        self.guild = bot.get_guild(guild_id)
         options = [
             nextcord.SelectOption(label="0: Purgeable members (no role after 21 days)"),
             nextcord.SelectOption(label="1: Who has admin permissions?"),
@@ -86,18 +87,18 @@ class Dropdown(nextcord.ui.Select):
 #             write.writerows(names_kicked)
 
 class DropdownView(nextcord.ui.View):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: commands.Bot, guild_id: typing.Optional[int]):
         self.bot = bot
         super().__init__()
-        self.add_item(Dropdown(self.bot)) #type:ignore
+        self.add_item(Dropdown(self.bot, guild_id)) #type:ignore
 
 class ToolkitMenuCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
 
-    @bot.slash_command(name="ctk", guild_ids=[ORCA_SERVER_ID])
+    @bot.slash_command(name="ctk")
     async def chuns_toolkit(self, interaction: Interaction):
-        view = DropdownView(self.bot)
+        view = DropdownView(self.bot, interaction.guild_id)
         await interaction.send("", view=view)
 
 def setup(bot: commands.Bot):
