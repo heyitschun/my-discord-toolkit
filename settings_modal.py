@@ -10,7 +10,6 @@ class SettingsModal(nextcord.ui.Modal):
         # f = open("guild_settings.json")
         # self.guilds = json.load(f)
         self.guilds = GUILDS
-        print(self.guilds)
         super().__init__(
             "Chun's Toolkit Settings",
             timeout=5 * 60,  # 5 minutes
@@ -40,15 +39,15 @@ class SettingsModal(nextcord.ui.Modal):
 
     async def callback(self, interaction: nextcord.Interaction) -> None:
         for child in self.children:
-            self.guilds[str(interaction.guild_id)][child.custom_id] = child.value
+            self.guilds[str(interaction.guild_id)][child.custom_id] = child.value #type:ignore
         # save to json
         with open("guild_settings.json", "w") as out:
-            json.dump(self.guilds, out)
+            json.dump(self.guilds, out, indent=2)
             out.close()
 
-        response = f"""
-            Notification channel: <#{self.notification_channel.value}>.
-            Server admin: <@&{self.admin_role_id.value}>
+        response = f"""**Settings updated**
+            • Notification channel: <#{self.notification_channel.value}>.
+            • Server admin: <@&{self.admin_role_id.value}>
         """
         await interaction.response.send_message(response, ephemeral=True)
 

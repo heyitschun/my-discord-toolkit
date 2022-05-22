@@ -7,7 +7,7 @@ from nextcord.iterators import AuditLogIterator
 from bot import bot, GUILDS
 
 async def on_ready() -> None:
-    print(f"\n{bot.user} is running...\n")
+    print(f"\n{bot.user} is online...\n")
 
 async def send_admin_given_message(audit_logs: AuditLogIterator, guild: nextcord.Guild):
     channel: typing.Any = bot.get_channel(int(GUILDS[str(guild.id)]["notification_channel"]))

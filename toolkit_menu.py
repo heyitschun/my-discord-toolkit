@@ -5,6 +5,7 @@ from nextcord import Interaction
 from nextcord.ext import commands
 
 from bot import bot, ORCA_SERVER_ID
+from blacklist_modal import BlacklistModal
 
 class Dropdown(nextcord.ui.Select):
     def __init__(self, bot: commands.Bot):
@@ -12,6 +13,7 @@ class Dropdown(nextcord.ui.Select):
         options = [
             nextcord.SelectOption(label="0: Purgeable members (no role after 14 days)"),
             nextcord.SelectOption(label="1: Who has admin permissions?"),
+            nextcord.SelectOption(label="2: Edit server blacklist (scam/ spam account IDs)")
         ]
         super().__init__(
             placeholder="Select something to do...", 
@@ -24,16 +26,19 @@ class Dropdown(nextcord.ui.Select):
 
         # count how many members have no role after 21 days of joining
         if self.values[0].startswith("0"):
-            purgeable = {}
-            for member in self.guild.members:
-                days_since_joining: int = (datetime.now(timezone.utc) - member.joined_at).days  # type: ignore
+            purgeable: dict[str, int] = {}
+            for member in self.guild.members: #type: ignore
+                days_since_joining: int = (datetime.now(timezone.utc) - member.joined_at).days  #type:ignore
                 if len(member.roles) == 1 and days_since_joining > 21:
-                    purgeable[member.name] = {"days_since_joining": days_since_joining}
-            return await interaction.response.send_message(f"Nr of users who failed to become a member within 21 days: {len(purgeable.keys())}")
+                    purgeable[member.name] = {"days_since_joining": days_since_joining} #type:ignore
+            return await interaction.response.send_message(f"""
+                    Nr of users who failed to become a member within 21 days: {len(purgeable.keys())}
+                """
+                )
 
         # check which members have admin permissions
         if self.values[0].startswith("1"):
-            admin_roles = [role for role in self.guild.roles if role.permissions.administrator]
+            admin_roles = [role for role in self.guild.roles if role.permissions.administrator] #type:ignore
             bot_admins: list[str] = [] 
             human_admins: list[str] = []
             for ar in admin_roles:
@@ -45,6 +50,12 @@ class Dropdown(nextcord.ui.Select):
             bot_admin_message = "\n".join(bot_admins)
             human_admin_message = "\n".join(human_admins)
             return await interaction.response.send_message(f"The following members have admin permissions:\n\n__Bots__\n{bot_admin_message}\n\n__Humans__\n{human_admin_message}")
+
+        # edit server blacklist
+        if self.values[0].startswith("2"):
+            modal = BlacklistModal(interaction)
+            await interaction.response.send_modal(modal)
+
 
 #     if msg.content.startswith("!boot-users-without-roles"):
 #         n_kicked = 0
@@ -76,7 +87,7 @@ class DropdownView(nextcord.ui.View):
     def __init__(self, bot: commands.Bot):
         self.bot = bot
         super().__init__()
-        self.add_item(Dropdown(self.bot)) # type: ignore
+        self.add_item(Dropdown(self.bot)) #type:ignore
 
 class ToolkitMenuCog(commands.Cog):
     def __init__(self, bot: commands.Bot):
@@ -85,7 +96,6 @@ class ToolkitMenuCog(commands.Cog):
     @bot.slash_command(name="ctk", guild_ids=[ORCA_SERVER_ID])
     @commands.has_permissions(administrator=True)
     async def chuns_toolkit(self, interaction: Interaction):
-        print(type(interaction))
         view = DropdownView(self.bot)
         await interaction.send("", view=view)
 
