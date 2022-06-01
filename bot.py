@@ -18,7 +18,7 @@ bot.load_extension("toolkit_menu")
 bot.load_extension("settings_menu")
 bot.load_extension("event_listeners")
 
-@bot.slash_command(name="ping", guild_ids=[902859067708551230])
+@bot.slash_command(name="ping")
 async def ping(interaction: nextcord.Interaction) -> None:
     print(guilds)
     await interaction.response.send_message("Pong from python")

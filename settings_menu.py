@@ -10,8 +10,7 @@ class SettingsCog(commands.Cog):
 
     @bot.slash_command(
         name="ctk-settings",
-        description="Chun's Toolkit Settings",
-        guild_ids=[902859067708551230]
+        description="Chun's Toolkit Settings"
     )
     async def settings(self, interaction: Interaction):
         modal = SettingsModal(interaction)

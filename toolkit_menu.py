@@ -96,7 +96,7 @@ class ToolkitMenuCog(commands.Cog):
     def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
-    @bot.slash_command(name="ctk", guild_ids=[902859067708551230])
+    @bot.slash_command(name="ctk")
     async def chuns_toolkit(self, interaction: Interaction) -> None:
         view = DropdownView(self.bot, interaction.guild_id)
         await interaction.send("", view=view)

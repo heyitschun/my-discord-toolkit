@@ -2,7 +2,6 @@ import json
 
 import nextcord
 from nextcord import Interaction
-from nextcord.ui import TextInput
 
 class SettingsModal(nextcord.ui.Modal):
     def __init__(self, interaction: Interaction):
@@ -39,7 +38,6 @@ class SettingsModal(nextcord.ui.Modal):
 
     async def callback(self, interaction: nextcord.Interaction) -> None:
         for child in self.children:
-            print(type(child))
             self.guilds[str(interaction.guild_id)][child.custom_id] = child.value #type:ignore
         # save to json
         with open("guild_settings.json", "w") as out:
