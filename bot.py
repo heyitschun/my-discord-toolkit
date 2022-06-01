@@ -1,10 +1,11 @@
 import json
+import typing
 
 import dotenv
 import nextcord
 from nextcord.ext import commands
 
-config = dotenv.dotenv_values(".env")
+config: typing.Any = dotenv.dotenv_values(".env")
 
 with open("guild_settings.json") as f:
     guilds = json.load(f)
@@ -17,8 +18,8 @@ bot.load_extension("toolkit_menu")
 bot.load_extension("settings_menu")
 bot.load_extension("event_listeners")
 
-@bot.slash_command(name="ping")
-async def ping(interaction: nextcord.Interaction):
+@bot.slash_command(name="ping", guild_ids=[902859067708551230])
+async def ping(interaction: nextcord.Interaction) -> None:
     print(guilds)
     await interaction.response.send_message("Pong from python")
 

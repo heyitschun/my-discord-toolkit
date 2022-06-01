@@ -9,7 +9,7 @@ from bot import bot
 from blacklist_modal import BlacklistModal
 
 class Dropdown(nextcord.ui.Select):
-    def __init__(self, bot: commands.Bot, guild_id):
+    def __init__(self, bot: commands.Bot, guild_id: int) -> None:
         self.guild = bot.get_guild(guild_id)
         options = [
             nextcord.SelectOption(label="0: Purgeable members (no role after 21 days)"),
@@ -23,7 +23,7 @@ class Dropdown(nextcord.ui.Select):
             options=options
         )
 
-    async def callback(self, interaction: Interaction):
+    async def callback(self, interaction: Interaction) -> None:
 
         # count how many members have no role after 21 days of joining
         if self.values[0].startswith("0"):
@@ -87,19 +87,19 @@ class Dropdown(nextcord.ui.Select):
 #             write.writerows(names_kicked)
 
 class DropdownView(nextcord.ui.View):
-    def __init__(self, bot: commands.Bot, guild_id: typing.Optional[int]):
+    def __init__(self, bot: commands.Bot, guild_id: typing.Optional[int]) -> None:
         self.bot = bot
         super().__init__()
         self.add_item(Dropdown(self.bot, guild_id)) #type:ignore
 
 class ToolkitMenuCog(commands.Cog):
-    def __init__(self, bot: commands.Bot):
+    def __init__(self, bot: commands.Bot) -> None:
         self.bot = bot
 
-    @bot.slash_command(name="ctk")
-    async def chuns_toolkit(self, interaction: Interaction):
+    @bot.slash_command(name="ctk", guild_ids=[902859067708551230])
+    async def chuns_toolkit(self, interaction: Interaction) -> None:
         view = DropdownView(self.bot, interaction.guild_id)
         await interaction.send("", view=view)
 
-def setup(bot: commands.Bot):
+def setup(bot: commands.Bot) -> None:
     bot.add_cog(ToolkitMenuCog(bot))
